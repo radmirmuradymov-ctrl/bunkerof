@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bunkerof — тонировка, свет и салон в Йошкар-Оле</title>
+<meta name="description" content="Тонировка от 3 000 ₽, Bi-LED, обслуживание и бронирование фар, химчистка, шумоизоляция и обивка. Йошкар-Ола, АГК Огонёк, бокс 379.">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/gate.webp">
+<style>
+:root{
+  --black:#000; --white:#fff; --grey:#A8A8A2; --line:#343432;
+  --rust:#6B3227; /* цвет ворот бокса 379 с их фото */
+  --g:16px;
+  /* у Clash Display и Satoshi нет кириллицы: латиница и цифры из них, русские буквы из Onest */
+  --head:"Clash Display", "Onest", sans-serif;
+  --body:"Satoshi", "Onest", system-ui, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--black);color:var(--white);font:400 17px/1.55 var(--body);overflow-x:clip}
+a{color:inherit}
+img{display:block;max-width:100%;height:auto}
+ul,ol{list-style:none}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 26px;
+  font:800 18px/1 var(--head);color:var(--black);background:var(--white);border:1px solid var(--white);
+  text-decoration:none;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
+.btn:hover{background:transparent;color:var(--white)}
+.btn-ghost{background:transparent;color:var(--white)}
+.btn-ghost:hover{background:var(--white);color:var(--black)}
+.h2{font:800 clamp(38px,5.6vw,88px)/1.05 var(--head);letter-spacing:-.01em}
+/* пробел берётся из Clash Display, а рядом с русскими буквами Onest он слишком узкий */
+.h1,.h2,.btn,.row b,.tg span,.tg b,.sum output,.faq summary,.ticket-title,.ticket dd,.map-label,.num{word-spacing:.14em}
+.sec{padding:80px var(--g)}
+
+/* ===== первый экран ===== */
+.hero{position:relative;height:100vh;height:100svh;min-height:520px;overflow:hidden;background:var(--black)}
+.hdr{position:absolute;z-index:5;left:0;right:0;top:0;display:flex;align-items:center;gap:16px;padding:12px var(--g)}
+.hdr-place{display:none;font-size:15px}
+.hdr-tel{margin-left:auto;display:inline-flex;align-items:center;min-height:44px;font-weight:700;font-size:15px;text-decoration:none}
+.hdr .btn{min-height:44px;padding:0 14px;font-size:15px}
+
+.reveal{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--g) max(24px,env(safe-area-inset-bottom))}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:46% 50%}
+.reveal::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.6),transparent 18%,transparent 40%,rgba(0,0,0,.92) 82%)}
+.copy{position:relative;z-index:1}
+.h1{font:800 clamp(40px,5.8vw,96px)/1.06 var(--head);letter-spacing:-.015em;max-width:12em}
+.lead{margin-top:14px;max-width:34em}
+.acts{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px}
+
+/* загрузочный экран: логотип, потом половины сами разъезжаются */
+.loader{position:fixed;inset:0;z-index:100;animation:loader-off 0s 5s forwards} /* страховка: если скрипт упал, экран всё равно исчезнет */
+@keyframes loader-off{to{visibility:hidden}}
+.door{--lw:min(88vw,55vh);--lw:min(88vw,55svh);position:absolute;left:0;right:0;height:50%;background:var(--black);display:flex;justify-content:center;transition:transform .8s cubic-bezier(.65,0,.35,1)}
+.loader.out .door-t{transform:translateY(-104%)}
+.loader.out .door-b{transform:translateY(104%)}
+.loader.out .band{opacity:0;transition:opacity .2s}
+.door-t{top:0;align-items:flex-end;padding-bottom:calc(var(--lw)*52/450);box-shadow:0 1px 34px rgba(255,255,255,.5)}
+.door-b{bottom:0;flex-direction:column;justify-content:flex-start;align-items:center;padding-top:calc(var(--lw)*55/450);box-shadow:0 -1px 34px rgba(255,255,255,.5)}
+.door img{width:var(--lw);height:auto}
+.door .custom{width:calc(var(--lw)*170/450);margin-top:calc(var(--lw)*58/450)}
+.band{--lw:min(88vw,55vh);--lw:min(88vw,55svh);position:absolute;z-index:4;left:50%;top:50%;width:var(--lw);transform:translate(-50%,-50%);pointer-events:none}
+@media (prefers-reduced-motion:no-preference){
+  .door-t img{animation:from-up .9s cubic-bezier(.16,1,.3,1) both}
+  .door-b img:first-child{animation:from-down .9s cubic-bezier(.16,1,.3,1) both}
+  .band img{animation:appear .5s .45s both}
+  .door .custom{animation:appear .5s .7s both}
+}
+@keyframes from-up{from{transform:translateY(-22%);opacity:0}}
+@keyframes from-down{from{transform:translateY(22%);opacity:0}}
+@keyframes appear{from{opacity:0}}
+
+/* ===== услуги: логотип разрезан двумя списками ===== */
+.svc{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"a" "top" "word" "bot" "b";padding-block:72px}
+.svc-a{grid-area:a}.svc-b{grid-area:b}
+.lg-top{grid-area:top;margin-top:56px}
+.lg-word{grid-area:word;margin:4.2% 0 4.9%}
+.lg-bot{grid-area:bot;margin-bottom:56px}
+.lg-top,.lg-word,.lg-bot{width:100%;height:auto}
+.rows{margin-top:24px;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);text-decoration:none;transition:background .15s,color .15s,padding .15s}
+.row b{font:800 clamp(24px,2.5vw,34px)/1.1 var(--head)}
+.row p{grid-column:1;margin-top:4px;color:var(--grey);font-size:16px;line-height:1.4;max-width:34em;transition:color .15s}
+.row span{grid-column:2;grid-row:1/3;font-size:15px;text-decoration:underline;text-underline-offset:4px;white-space:nowrap}
+@media (hover:hover){
+  .row:hover{background:var(--white);color:var(--black);padding-inline:14px}
+  .row:hover p{color:#3d3d3a}
+}
+
+/* ===== цены ===== */
+.price{display:grid;grid-template-columns:minmax(0,1fr);gap:36px}
+.price-pic{width:100%;height:100%;object-fit:cover;aspect-ratio:5/4}
+.tgs{margin-top:28px;border-top:1px solid var(--line)}
+.tg{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:14px;align-items:center;width:100%;min-height:76px;padding:12px 0;
+  color:inherit;background:none;border:0;border-bottom:1px solid var(--line);text-align:left;font:inherit;cursor:pointer}
+.tg i{width:30px;height:30px;border:1px solid var(--white);transition:background .15s}
+.tg[aria-pressed="true"] i{background:var(--white)}
+.tg span{font:800 clamp(20px,2.2vw,30px)/1.15 var(--head)}
+.tg b{font:800 clamp(20px,2.2vw,30px)/1 var(--head);white-space:nowrap}
+.law{margin-top:12px;font-size:15px;color:var(--grey);max-width:36em}
+.sum{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:24px}
+.sum output{font:800 clamp(72px,10vw,150px)/.9 var(--head);letter-spacing:-.02em}
+.price-more{margin-top:24px;color:var(--grey);max-width:36em}
+
+/* ===== бокс ===== */
+.box{display:grid;gap:10px;padding-inline:0;padding-bottom:0}
+.box-text{padding:0 var(--g) 26px}
+.box-text p{margin-top:14px;max-width:32em;color:var(--grey)}
+.box img{width:100%;height:100%;object-fit:cover}
+.box-a{aspect-ratio:4/3}
+.box-b{aspect-ratio:4/3}
+
+/* ===== вопросы ===== */
+.faq{margin-top:28px;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:44px;padding:18px 0;font:800 clamp(25px,2.6vw,36px)/1.15 var(--head)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";flex:none;font:400 30px/1 var(--body);color:var(--grey);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq-a{display:grid;gap:10px;padding-bottom:22px;color:#d6d6d0;max-width:40em}
+
+/* ===== заявка ===== */
+.order{background:var(--rust);display:grid;gap:36px}
+.order-note{margin-top:14px;max-width:30em}
+.of{display:grid;gap:14px;margin-top:28px}
+.of label{display:grid;gap:6px;font-weight:700;font-size:15px}
+.of input,.of select{width:100%;min-height:52px;padding:0 14px;font:400 17px var(--body);color:var(--black);background:var(--white);border:1px solid var(--white);border-radius:0}
+.of select{-webkit-appearance:none;appearance:none;padding-right:40px;
+  background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23000' stroke-width='1.6'/%3E%3C/svg%3E") right 16px center/12px no-repeat}
+.of input:focus-visible,.of select:focus-visible{outline:2px solid var(--white);outline-offset:2px}
+.of [aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--black)}
+.ferr{font-weight:700;font-size:15px}
+.ferr:empty{display:none}
+.of .btn{justify-self:start;margin-top:6px;background:var(--black);border-color:var(--black);color:var(--white)}
+.of .btn:hover{background:var(--white);border-color:var(--white);color:var(--black)}
+.done{margin-top:28px;display:grid;gap:12px;justify-items:start}
+.done p{max-width:30em}
+.ticket{align-self:start;padding:22px 20px 26px;background:var(--white);color:var(--black);transform:rotate(-.6deg)}
+.ticket-title{font:800 clamp(34px,3.6vw,52px)/1.08 var(--head);letter-spacing:-.02em}
+.ticket-cap{margin-top:8px;font-size:15px}
+.ticket dl{margin-top:20px}
+.ticket div{padding:9px 0 7px;border-bottom:1px solid var(--black)}
+.ticket dt{font-size:13px;color:#55554f}
+.ticket dd{min-height:30px;font:800 24px/1.25 var(--head);overflow-wrap:anywhere}
+
+/* ===== контакты ===== */
+.num{display:block;font:800 calc((100vw - 2*var(--g))/9.3)/1 var(--head);letter-spacing:-.015em;white-space:nowrap;text-decoration:none}
+.info{margin-top:32px;display:grid;gap:22px}
+.info h3{font:400 15px/1.3 var(--body);color:var(--grey);margin-bottom:4px}
+.info p{font-size:19px;line-height:1.35}
+.info a{text-underline-offset:4px}
+.map{position:relative;margin-top:36px;aspect-ratio:4/3;background:#1a1a1a;overflow:hidden}
+/* iframe больше блока на 70px с каждой стороны: подпись и кнопки OSM остаются за краем, авторство указано в подвале */
+.map iframe{position:absolute;left:-70px;top:-70px;width:calc(100% + 140px);height:calc(100% + 140px);border:0;pointer-events:none;filter:grayscale(1) invert(.92) contrast(.92)}
+.map-link{position:absolute;inset:0;text-decoration:none;background:radial-gradient(circle at 50% 50%,transparent 12%,rgba(0,0,0,.78) 58%)}
+.map-link:focus-visible{outline-offset:-4px}
+.map-dot{position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--white);box-shadow:0 0 0 7px rgba(255,255,255,.28),0 0 70px 34px rgba(255,255,255,.5)}
+.map-dot::after{content:"";position:absolute;inset:-7px;border:1px solid var(--white);border-radius:50%}
+.map-label{position:absolute;left:50%;top:50%;transform:translate(-50%,-66px);padding:7px 14px 8px;font:800 22px/1 var(--head);color:var(--black);background:var(--white);white-space:nowrap}
+@media (prefers-reduced-motion:no-preference){.map-dot::after{animation:ping 2.2s ease-out infinite}}
+@keyframes ping{to{transform:scale(3.4);opacity:0}}
+
+.foot{display:grid;gap:14px;justify-items:start;padding:32px var(--g) calc(104px + env(safe-area-inset-bottom));border-top:1px solid var(--line);font-size:15px;color:var(--grey)}
+.foot img{width:190px;height:auto}
+
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;gap:8px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+  background:var(--black);border-top:1px solid var(--line);transform:translateY(110%);visibility:hidden;transition:transform .25s,visibility .25s}
+.mbar.on{transform:none;visibility:visible}
+.mbar a{flex:1}
+
+@media (min-width:600px){
+  :root{--g:32px}
+  .hdr{padding-block:16px}
+  .hdr-place{display:block}
+}
+@media (min-width:960px){
+  :root{--g:44px}
+  .sec{padding-block:128px}
+  .hdr .btn{min-height:52px;padding:0 26px;font-size:18px}
+  .reveal{padding-bottom:40px}
+  .copy{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto);column-gap:48px;align-items:end}
+  .lead{grid-column:2;grid-row:1;margin:0 0 12px;max-width:21em;align-self:end}
+  .acts{grid-column:1;margin-top:26px}
+  .svc{grid-template-columns:minmax(0,1fr) minmax(0,35vw);column-gap:7vw;grid-template-areas:"a top" ". word" "b bot";padding-block:128px}
+  .lg-top{align-self:end;margin:0}
+  .lg-bot{align-self:start;margin:0}
+  .svc-b{margin-top:-4vw}
+  .price{grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:64px;align-items:stretch}
+  .box{grid-template-columns:minmax(0,8fr) minmax(0,4fr);gap:10px}
+  .box-text{grid-column:1/-1;padding:0 var(--g) 34px;display:grid;grid-template-columns:minmax(0,8fr) minmax(0,4fr);column-gap:32px;align-items:end}
+  .box-text p{margin:0 0 8px}
+  .box-a{aspect-ratio:16/10}
+  .box-b{aspect-ratio:auto}
+  .faqs{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:64px}
+  .faq{margin-top:0}
+  .order{grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:7vw}
+  .of{grid-template-columns:1fr 1fr;column-gap:20px;margin-top:40px}
+  .of .full{grid-column:1/-1}
+  .ticket{padding:30px 30px 36px;margin-top:8px}
+  .info{grid-template-columns:repeat(4,auto);justify-content:space-between;margin-top:44px}
+  .map{margin-top:56px;aspect-ratio:auto;height:520px}
+  .foot{grid-template-columns:auto 1fr;align-items:center;column-gap:40px;padding-bottom:32px}
+  .mbar{display:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .loader{display:none}
+  .btn,.row,.row p,.tg i,.mbar,.faq summary::after{transition:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  @supports (interpolate-size:allow-keywords){
+    .faq details{interpolate-size:allow-keywords}
+    .faq details::details-content{height:0;overflow:clip;transition:height .3s ease,content-visibility .3s allow-discrete}
+    .faq details[open]::details-content{height:auto}
+  }
+}
+</style>
+<noscript><style>.loader{display:none}</style></noscript>
+</head>
+<body>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="door door-t"><img src="img/b-top.png" width="1350" height="549" alt=""></div>
+  <div class="door door-b">
+    <img src="img/b-bot.png" width="1350" height="486" alt="">
+    <img class="custom" src="img/custom.png" width="510" height="165" alt="">
+  </div>
+  <div class="band"><img src="img/word.png" width="1350" height="198" alt=""></div>
+</div>
+
+<section class="hero" id="top" aria-labelledby="h1">
+  <div class="reveal">
+    <img class="photo" src="img/gate.webp" width="2200" height="1650" alt="Синяя тонированная Lada перед открытыми воротами освещённого бокса" fetchpriority="high">
+    <div class="copy">
+      <h1 class="h1" id="h1">Тонировка, свет и салон как для своих<span class="sr"> в Йошкар-Оле</span></h1>
+      <p class="lead">Тонировка от 3&nbsp;000&nbsp;₽. Принимаем по записи в боксе 379, АГК Огонёк, Йошкар-Ола.</p>
+      <div class="acts">
+        <a class="btn" href="#zayavka">Записаться</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="hdr">
+    <span class="hdr-place">Бокс 379, АГК Огонёк</span>
+    <a class="hdr-tel" href="tel:+79877138228">+7 987 713-82-28</a>
+    <a class="btn" href="#zayavka">Записаться</a>
+  </header>
+</section>
+
+<main>
+<section class="sec svc" id="uslugi" aria-label="Услуги">
+  <div class="svc-a">
+    <h2 class="h2">Тонировка и свет</h2>
+    <ul class="rows">
+      <li><a class="row" href="#ceny"><b>Тонировка от 3&nbsp;000&nbsp;₽</b><p>Передний и задний полукруг, полоса, атермальные плёнки, хамелеон. Можно с вашим материалом.</p><span>Посчитать</span></a></li>
+      <li><a class="row" href="#zayavka" data-service="Bi-LED модули"><b>Bi-LED модули</b><p>Установка линзованного освещения.</p><span>В заявку</span></a></li>
+      <li><a class="row" href="#zayavka" data-service="Обслуживание фар"><b>Обслуживание фар</b><p>Разбор, замена стёкол, регулировка, замена ламп.</p><span>В заявку</span></a></li>
+      <li><a class="row" href="#zayavka" data-service="Дополнительный свет"><b>Дополнительный свет</b><p>ПТФ, ФСО, линзованные лампы.</p><span>В заявку</span></a></li>
+      <li><a class="row" href="#zayavka" data-service="Бронирование фар"><b>Бронирование фар</b><p>Защита полиуретановой плёнкой.</p><span>В заявку</span></a></li>
+    </ul>
+  </div>
+
+  <img class="lg-top" src="img/b-top.png" width="1350" height="549" alt="" loading="lazy">
+  <img class="lg-word" src="img/word.png" width="1350" height="198" alt="Bunkerof" loading="lazy">
+  <img class="lg-bot" src="img/b-bot.png" width="1350" height="486" alt="" loading="lazy">
+
+  <div class="svc-b">
+    <h2 class="h2">Детейлинг и салон</h2>
+    <ul class="rows">
+      <li><a class="row" href="#zayavka" data-service="Химчистка"><b>Химчистка</b><p>Полный детейлинг салона, с разбором или без. Предпродажная подготовка.</p><span>В заявку</span></a></li>
+      <li><a class="row" href="#zayavka" data-service="Тюнинг интерьера"><b>Тюнинг интерьера</b><p>Ставим панели Приоры 1 и 2 в ВАЗ 2110–2112.</p><span>В заявку</span></a></li>
+      <li><a class="row" href="#zayavka" data-service="Покраска пластика"><b>Покраска пластика</b><p>Обновляем или меняем цвет элементов салона.</p><span>В заявку</span></a></li>
+      <li><a class="row" href="#zayavka" data-service="Шумоизоляция"><b>Шумоизоляция</b><p>Вибро- и шумоизоляция, полная или частичная.</p><span>В заявку</span></a></li>
+      <li><a class="row" href="#zayavka" data-service="Обивка"><b>Обивка</b><p>Чехлы и новая обивка сидений.</p><span>В заявку</span></a></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec price" id="ceny" aria-labelledby="price-h">
+  <img class="price-pic" src="img/kia.webp" width="1206" height="965" alt="Белая Kia Rio с тонировкой и включёнными фарами, ночь" loading="lazy">
+  <div>
+    <h2 class="h2" id="price-h">Посчитайте тонировку</h2>
+    <div class="tgs">
+      <button class="tg" type="button" aria-pressed="false" data-price="3000" id="tgFront"><i aria-hidden="true"></i><span>Передний полукруг</span><b>3&nbsp;000&nbsp;₽</b></button>
+      <button class="tg" type="button" aria-pressed="true" data-price="4000" id="tgRear"><i aria-hidden="true"></i><span>Задний полукруг</span><b>4&nbsp;000&nbsp;₽</b></button>
+    </div>
+    <p class="law">Лобовое и передние боковые стёкла по закону должны пропускать не меньше 70% света.</p>
+    <div class="sum">
+      <output id="total" aria-live="polite">4&nbsp;000&nbsp;₽</output>
+      <a class="btn" href="#zayavka" id="tintGo">Записаться на тонировку</a>
+    </div>
+    <p class="price-more">Фары, свет и салон считаем по машине: напишите марку и что нужно сделать.</p>
+  </div>
+</section>
+
+<section class="sec box" aria-labelledby="box-h">
+  <div class="box-text">
+    <h2 class="h2" id="box-h">Свет со всех сторон</h2>
+    <p>Панели на потолке, лампы на стенах. При таком свете видно каждую складку плёнки.</p>
+  </div>
+  <img class="box-a" src="img/hood.webp" width="1800" height="1350" alt="Вид с капота: лобовое стекло и LED-панели на потолке бокса" loading="lazy">
+  <img class="box-b" src="img/box.webp" width="1800" height="1350" alt="Тёмно-синий автомобиль в боксе под LED-панелями" loading="lazy">
+</section>
+
+<section class="sec faqs" aria-labelledby="faq-h">
+  <h2 class="h2" id="faq-h">Что спрашивают</h2>
+  <div class="faq">
+    <details>
+      <summary>Какую тонировку можно по закону?</summary>
+      <div class="faq-a"><p>Лобовое и передние боковые стёкла должны пропускать не меньше 70% света: это требование техрегламента ТР ТС 018/2011. Заднюю полусферу можно делать темнее.</p><p>Заводское стекло само пропускает не 100% света, поэтому даже светлая плёнка на передних стёклах может опустить итог ниже 70%.</p></div>
+    </details>
+    <details>
+      <summary>Можно приехать со своей плёнкой?</summary>
+      <div class="faq-a"><p>Да, работаем и с вашим материалом.</p></div>
+    </details>
+    <details>
+      <summary>Какие бывают варианты тонировки?</summary>
+      <div class="faq-a"><p>Передний и задний полукруг, полоса, атермальные плёнки и хамелеон.</p></div>
+    </details>
+    <details>
+      <summary>Сколько стоят фары, химчистка, шумоизоляция?</summary>
+      <div class="faq-a"><p>Зависит от машины и объёма работ. Напишите марку и что нужно сделать, мастер назовёт цену.</p></div>
+    </details>
+    <details>
+      <summary>Нужна запись?</summary>
+      <div class="faq-a"><p>Да, принимаем по предварительной записи. Напишите, когда удобно приехать, или позвоните.</p></div>
+    </details>
+  </div>
+</section>
+
+<section class="sec order" id="zayavka" aria-labelledby="order-h">
+  <div>
+    <h2 class="h2" id="order-h">Запись в бокс</h2>
+    <p class="order-note">Заполните форму, и в Telegram откроется готовое сообщение мастеру. Останется нажать «Отправить».</p>
+    <form class="of" id="orderForm" novalidate>
+      <label>Марка и модель
+        <input name="car" maxlength="60" autocomplete="off" placeholder="Например, Лада Приора" aria-describedby="e-car" required>
+        <span class="ferr" id="e-car"></span>
+      </label>
+      <label>Работа
+        <select name="service" aria-describedby="e-service" required>
+          <option value="" selected disabled>Выберите работу</option>
+          <option>Тонировка: передний полукруг</option>
+          <option>Тонировка: задний полукруг</option>
+          <option>Тонировка: передний и задний полукруг</option>
+          <option>Тонировка: полоса, атермальная, хамелеон</option>
+          <option>Bi-LED модули</option>
+          <option>Обслуживание фар</option>
+          <option>Дополнительный свет</option>
+          <option>Бронирование фар</option>
+          <option>Химчистка</option>
+          <option>Тюнинг интерьера</option>
+          <option>Покраска пластика</option>
+          <option>Шумоизоляция</option>
+          <option>Обивка</option>
+          <option>Нужна консультация</option>
+        </select>
+        <span class="ferr" id="e-service"></span>
+      </label>
+      <label>Когда удобно
+        <input name="time" maxlength="60" autocomplete="off" placeholder="Например, суббота после 12">
+      </label>
+      <label>Телефон, если удобнее созвониться
+        <input name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="+7 900 000-00-00" aria-describedby="e-phone">
+        <span class="ferr" id="e-phone"></span>
+      </label>
+      <button class="btn full" type="submit">Отправить в Telegram</button>
+    </form>
+    <div class="done" id="orderDone" hidden>
+      <p>Сообщение открыто в Telegram. Нажмите в нём «Отправить», и мастер его получит.</p>
+      <a class="btn" id="tgLink" href="https://t.me/Bunkerof1" target="_blank" rel="noopener">Открыть Telegram ещё раз</a>
+      <button class="btn btn-ghost" type="button" id="orderAgain">Заполнить заново</button>
+    </div>
+  </div>
+
+  <aside class="ticket" aria-label="Предпросмотр заявки">
+    <p class="ticket-title">Ваша заявка</p>
+    <p class="ticket-cap">Так её увидит мастер. Поля заполняются сами, пока вы вводите данные.</p>
+    <dl>
+      <div><dt>Машина</dt><dd id="tCar"></dd></div>
+      <div><dt>Работа</dt><dd id="tService"></dd></div>
+      <div><dt>Когда</dt><dd id="tTime"></dd></div>
+      <div><dt>Телефон</dt><dd id="tPhone"></dd></div>
+    </dl>
+  </aside>
+</section>
+
+<section class="sec" id="kontakty" aria-labelledby="c-h">
+  <h2 class="sr" id="c-h">Контакты</h2>
+  <a class="num" href="tel:+79877138228">+7 987 713-82-28</a>
+  <div class="info">
+    <div><h3>Адрес</h3><p>Йошкар-Ола, АГК Огонёк, бокс 379</p></div>
+    <div><h3>Время</h3><p>Круглосуточно, по записи</p></div>
+    <div><h3>Написать</h3><p><a href="https://t.me/Bunkerof1" target="_blank" rel="noopener">Telegram @Bunkerof1</a></p></div>
+    <div><h3>Проложить маршрут</h3><p><a href="https://yandex.ru/maps/org/bunkerof/83016241567/" target="_blank" rel="noopener">Яндекс Карты</a></p></div>
+  </div>
+  <div class="map">
+    <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=47.861925%2C56.652036%2C47.873925%2C56.657036&amp;layer=mapnik" title="Карта: Bunkerof, АГК Огонёк, 379" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+    <a class="map-link" href="https://yandex.ru/maps/org/bunkerof/83016241567/" target="_blank" rel="noopener" aria-label="Открыть Bunkerof на Яндекс Картах"><i class="map-dot"></i><span class="map-label">Бокс 379</span></a>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <img src="img/word.png" width="1350" height="198" alt="Bunkerof" loading="lazy">
+  <p>Демо-версия сайта для согласования. Цены и фото с карточки на Яндекс Картах. Карта: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© участники OpenStreetMap</a>.</p>
+</footer>
+
+<nav class="mbar" id="mbar" aria-label="Быстрые действия">
+  <a class="btn btn-ghost" href="tel:+79877138228">Позвонить</a>
+  <a class="btn" href="#zayavka">Записаться</a>
+</nav>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// загрузочный экран: минимум 1,3 с, чтобы логотип успели увидеть; максимум 3 с, даже если сеть зависла
+(() => {
+  const el = $('loader');
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const loaded = new Promise(r => document.readyState === 'complete' ? r() : addEventListener('load', r, { once: true }));
+  Promise.race([Promise.all([wait(1300), loaded]), wait(3000)]).then(() => { el.classList.add('out'); setTimeout(() => el.remove(), 900); });
+})();
+
+// +7 и 10 цифр; 8 в начале меняем на 7, 10 цифр без кода страны дополняем
+function normPhone(v) {
+  let d = String(v).replace(/\D/g, '');
+  if (d.length === 10 && !/^[78]/.test(d)) d = '7' + d;
+  if (d.length !== 11 || !/^[78]/.test(d)) return null;
+  return `+7 (${d.slice(1, 4)}) ${d.slice(4, 7)}-${d.slice(7, 9)}-${d.slice(9)}`;
+}
+const clean = s => String(s).replace(/\s+/g, ' ').trim().slice(0, 60);
+function buildMessage({ car, service, time, tel }) {
+  return ['Здравствуйте! Хочу записаться.', `Машина: ${car}`, `Работа: ${service}`, time && `Когда: ${time}`, tel && `Телефон: ${tel}`].filter(Boolean).join('\n');
+}
+function tintService(front, rear) {
+  if (front && rear) return 'Тонировка: передний и задний полукруг';
+  if (front) return 'Тонировка: передний полукруг';
+  if (rear) return 'Тонировка: задний полукруг';
+  return 'Тонировка: полоса, атермальная, хамелеон';
+}
+console.assert(normPhone('8 (987) 713-82-28') === '+7 (987) 713-82-28' && normPhone('9877138228') === '+7 (987) 713-82-28' && normPhone('+7 987 713 82') === null, 'normPhone');
+console.assert(buildMessage({ car: 'Гранта', service: 'Обивка', time: '', tel: '' }) === 'Здравствуйте! Хочу записаться.\nМашина: Гранта\nРабота: Обивка', 'buildMessage');
+console.assert(tintService(true, false) === 'Тонировка: передний полукруг' && tintService(false, false).includes('полоса'), 'tintService');
+
+(() => {
+  const form = $('orderForm'), f = form.elements, done = $('orderDone');
+  const sync = () => {
+    $('tCar').textContent = clean(f.car.value);
+    $('tService').textContent = f.service.value;
+    $('tTime').textContent = clean(f.time.value);
+    $('tPhone').textContent = clean(f.phone.value);
+  };
+  form.addEventListener('input', sync);
+
+  const setErr = (input, msg) => {
+    input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    $(input.getAttribute('aria-describedby')).textContent = msg;
+  };
+  const pick = v => { f.service.value = v; setErr(f.service, ''); sync(); };
+
+  // калькулятор тонировки
+  const tgs = [$('tgFront'), $('tgRear')];
+  const total = () => {
+    const sum = tgs.reduce((a, b) => a + (b.getAttribute('aria-pressed') === 'true' ? +b.dataset.price : 0), 0);
+    $('total').textContent = sum.toLocaleString('ru-RU') + ' ₽';
+  };
+  tgs.forEach(b => b.addEventListener('click', () => { b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true'); total(); }));
+  $('tintGo').addEventListener('click', () => pick(tintService(tgs[0].getAttribute('aria-pressed') === 'true', tgs[1].getAttribute('aria-pressed') === 'true')));
+
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-service]');
+    if (a) pick(a.dataset.service);
+  });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const car = clean(f.car.value), time = clean(f.time.value), raw = clean(f.phone.value), tel = raw ? normPhone(raw) : '';
+    setErr(f.car, car ? '' : 'Укажите марку и модель');
+    setErr(f.service, f.service.value ? '' : 'Выберите работу');
+    setErr(f.phone, tel === null ? 'Проверьте номер: нужно 11 цифр, например +7 900 000-00-00' : '');
+    const bad = form.querySelector('[aria-invalid="true"]');
+    if (bad) { bad.focus(); return; }
+    const url = 'https://t.me/Bunkerof1?text=' + encodeURIComponent(buildMessage({ car, service: f.service.value, time, tel }));
+    $('tgLink').href = url;
+    window.open(url, '_blank', 'noopener');
+    form.hidden = true;
+    done.hidden = false;
+  });
+
+  $('orderAgain').addEventListener('click', () => {
+    form.reset();
+    form.querySelectorAll('[aria-invalid]').forEach(i => i.removeAttribute('aria-invalid'));
+    sync();
+    done.hidden = true;
+    form.hidden = false;
+    f.car.focus();
+  });
+
+  // нижняя панель на телефоне: после ворот, кроме заявки и контактов
+  const bar = $('mbar'), seen = new Set();
+  let past = false;
+  const upd = () => bar.classList.toggle('on', past && seen.size === 0);
+  new IntersectionObserver(([e]) => { past = !e.isIntersecting; upd(); }).observe($('top'));
+  const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? seen.add(e.target) : seen.delete(e.target)); upd(); });
+  ['zayavka', 'kontakty'].forEach(id => io.observe($(id)));
+})();
+</script>
+</body>
+</html>
