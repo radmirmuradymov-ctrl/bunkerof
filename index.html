@@ -8,9 +8,10 @@
 <meta name="theme-color" content="#000000">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;700;800&display=swap" rel="stylesheet">
-<link href="https://api.fontshare.com/v2/css?f[]=clash-display@700&display=swap" rel="stylesheet">
-<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&display=swap" rel="stylesheet">
+<!-- media=print: шрифты не блокируют показ страницы, если их сервер недоступен -->
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <link rel="preload" as="image" href="img/gate.webp">
 <style>
 :root{
@@ -376,9 +377,10 @@ ul,ol{list-style:none}
       <button class="btn full" type="submit">Отправить в Telegram</button>
     </form>
     <div class="done" id="orderDone" hidden>
-      <p>Сообщение открыто в Telegram. Нажмите в нём «Отправить», и мастер его получит.</p>
-      <a class="btn" id="tgLink" href="https://t.me/Bunkerof1" target="_blank" rel="noopener">Открыть Telegram ещё раз</a>
+      <p>Открываем Telegram с готовым сообщением. Нажмите в нём «Отправить», и мастер его получит.</p>
+      <a class="btn" id="tgLink" href="tg://resolve?domain=Bunkerof1">Открыть Telegram ещё раз</a>
       <button class="btn btn-ghost" type="button" id="orderAgain">Заполнить заново</button>
+      <p>Если Telegram не открылся, позвоните: <a href="tel:+79877138228">+7 987 713-82-28</a>.</p>
     </div>
   </div>
 
@@ -400,7 +402,7 @@ ul,ol{list-style:none}
   <div class="info">
     <div><h3>Адрес</h3><p>Йошкар-Ола, АГК Огонёк, бокс 379</p></div>
     <div><h3>Время</h3><p>Круглосуточно, по записи</p></div>
-    <div><h3>Написать</h3><p><a href="https://t.me/Bunkerof1" target="_blank" rel="noopener">Telegram @Bunkerof1</a></p></div>
+    <div><h3>Написать</h3><p><a href="tg://resolve?domain=Bunkerof1">Telegram @Bunkerof1</a></p></div>
     <div><h3>Проложить маршрут</h3><p><a href="https://yandex.ru/maps/org/bunkerof/83016241567/" target="_blank" rel="noopener">Яндекс Карты</a></p></div>
   </div>
   <div class="map">
@@ -490,9 +492,10 @@ console.assert(tintService(true, false) === 'Тонировка: передни�
     setErr(f.phone, tel === null ? 'Проверьте номер: нужно 11 цифр, например +7 900 000-00-00' : '');
     const bad = form.querySelector('[aria-invalid="true"]');
     if (bad) { bad.focus(); return; }
-    const url = 'https://t.me/Bunkerof1?text=' + encodeURIComponent(buildMessage({ car, service: f.service.value, time, tel }));
+    // t.me из России часто недоступен, tg:// открывает приложение напрямую
+    const url = 'tg://resolve?domain=Bunkerof1&text=' + encodeURIComponent(buildMessage({ car, service: f.service.value, time, tel }));
     $('tgLink').href = url;
-    window.open(url, '_blank', 'noopener');
+    location.href = url;
     form.hidden = true;
     done.hidden = false;
   });
